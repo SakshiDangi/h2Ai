@@ -1,6 +1,7 @@
 "use client"
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Navbar from './Navbar';
 
 const AnalysisPage = () => {
   const [copied, setCopied] = useState(false);
@@ -11,8 +12,9 @@ const AnalysisPage = () => {
   };
 
   return (
-    <div>
-      <div className="flex-1 flex items-center justify-center p-6 bg-purple-dark">
+    <div className=''>
+      <Navbar />
+      <div className="flex-1 flex items-center justify-center p-6 bg-purple-dark mt-12 z-10">
         <div className="w-full max-w-4xl mx-auto animate-scale relative backdrop-blur-lg bg-health-purple/10 border-health-purple/20">
           {/* Header Section */}
           <div className="border-b-2 border-health-gray/30 pb-4 mb-6">

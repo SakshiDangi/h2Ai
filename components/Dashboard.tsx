@@ -9,24 +9,30 @@ import {
   
 export default function Dashboard() {
   return (
-    <div className="w-[100vw] flex flex-row">
+    // <div className="bg-black w-[100vw]">
+    <div className="bg-zinc-950 h-[100vh] bg-center bg-no-repeat flex flex-row">
       <div className="mx-14 mt-22 lg:basis-1/3">
-      <Card className="bg-orange-700 mb-0 pb-0 gap-8 focus:border-orange-700 focus:border">
+      <Card className="bg-red-950 mb-0 pb-0 gap-8 border-none">
         <CardHeader>
-          <CardTitle className="text-white">Summary</CardTitle>
+          <CardTitle className="text-white font-bold">Parkinson</CardTitle>
           <CardDescription>
-            <div className=" w-30 h-25 p-0">
-                <div className="flex overflow-hidden">
-                    <div className="w-full pl-4 flex-left">
+            <div className=" p-0">
+                <div className="flex overflow-hidden bg-black p-3 rounded-3xl">
+                    <div className="flex-left">
                       <Image
-                      src="/Group3.svg"
+                      src="/home.gif"
                       width={500}
-                      height={100}
-                      alt="logo"
+                      height={500}
+                      alt="home"
                       />
                     </div>
                     <div className="flex-right">
-
+                      <Image
+                        src="/home1.gif"
+                        width={500}
+                        height={500}
+                        alt="home"
+                      />
                     </div>
                 </div>
             </div>
@@ -59,11 +65,12 @@ export default function Dashboard() {
       </Card>
       </div>
 
-      <div className="mt-14 basis-2/3 w-full h-60 bg-green-800">
+      <div className="mt-14 basis-2/3 w-full h-60">
         <div className="p-0 lg:pr-0 mr-0 overflow-hidden border-none object-fill">
-            
+
         </div>
       </div>
+    {/* </div> */}
     </div>
   )
 }
