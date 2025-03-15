@@ -54,8 +54,8 @@ const DrawingCanvas = () => {
       ctx.beginPath();
       ctx.moveTo(lastPos.x, lastPos.y);
       ctx.lineTo(currentX, currentY);
-      ctx.strokeStyle = 'black';
-      ctx.lineWidth = 3;
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = 2;
       ctx.lineCap = 'round';
       ctx.stroke();
       setLastPos({ x: currentX, y: currentY });
@@ -116,13 +116,20 @@ const DrawingCanvas = () => {
   };
 
   return (
-    <div className=''>
-      <h1>Draw with Mouse</h1>
+    <div className="">
+      <h1 className="text-3xl font-extrabold mb-6 text-center">
+        Draw a spiral from its center outward by hand
+      </h1>
+      <div className="flex w-[54vw] items-center m-auto mb-6 justify-center bg-gray-800 px-6 py-6 rounded-3xl">
+      <div>
+      {/* <h1 className="text-xl font-medium mb-6 text-center">
+          Draw a spiral from its center outward by hand
+      </h1> */}
       <canvas
         ref={canvasRef}
-        width="256"
-        height="256"
-        style={{ border: '1px solid black', backgroundColor: 'white' }}
+        width={500}
+        height={300}
+        className='border border-zinc-900 bg-gray-900 rounded-3xl'
         onMouseDown={startDrawing}
         onMouseMove={draw}
         onMouseUp={stopDrawing}
@@ -130,8 +137,20 @@ const DrawingCanvas = () => {
       ></canvas>
       <br />
       {/* <button onClick={saveImageToLocalStorage}>Save Image</button> */}
-      <button onClick={saveAndSendImage}>Save and Send Image</button>
-      <button onClick={clearCanvas}>Clear</button>
+      <div className='flex gap-8 items-center'>
+      <button onClick={saveAndSendImage}
+        className='px-4 py-2 ml-22 flex rounded-full text-sm font-medium transition-all duration-300 bg-orange-800 text-white/70 hover:bg-purple-700 hover:text-white'
+      >
+        Save and Send Image
+      </button>
+      <button onClick={clearCanvas}
+        className='px-4 py-2 flex rounded-full text-sm font-medium transition-all duration-300 bg-purple-800 text-white/70 hover:bg-orange-700 hover:text-white'
+      >
+        Clear
+      </button>
+      </div>
+      </div>
+    </div>
     </div>
   );
 };
