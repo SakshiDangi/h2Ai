@@ -1,49 +1,88 @@
 "use client"
-import React, { useRef, useState } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 
 const DrawingCanvas = () => {
-  const canvasRef = useRef(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [lastPos, setLastPos] = useState({ x: 0, y: 0 });
 
-  const startDrawing = (e) => {
+    // Load the image from localStorage if it exists
+    useEffect(() => {
+      const savedImage = localStorage.getItem('drawingImage');
+      if (savedImage) {
+        const canvas = canvasRef.current;
+        const ctx = canvas?.getContext('2d');
+        if (canvas && ctx) {
+          const img = new Image();
+          img.src = savedImage; // Load the saved image
+          img.onload = () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas before drawing the saved image
+            ctx.drawImage(img, 0, 0); // Draw the image onto the canvas
+          };
+        }
+      }
+    }, []); 
+
+
+  const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    setIsDrawing(true);
-    const rect = canvas.getBoundingClientRect();
-    setLastPos({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top
-    });
+    if(canvas) {
+      const ctx = canvas.getContext('2d');
+      setIsDrawing(true);
+      const rect = canvas.getBoundingClientRect();
+      setLastPos({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+      });
+    } else {
+      console.error("Canvas element is not available")
+    }
+
   };
 
-  const draw = (e) => {
+  const draw = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!isDrawing) return;
 
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    const rect = canvas.getBoundingClientRect();
-
-    const currentX = e.clientX - rect.left;
-    const currentY = e.clientY - rect.top;
-
-    ctx.beginPath();
-    ctx.moveTo(lastPos.x, lastPos.y);
-    ctx.lineTo(currentX, currentY);
-    ctx.strokeStyle = 'black';
-    ctx.lineWidth = 3;
-    ctx.lineCap = 'round';
-    ctx.stroke();
-    setLastPos({ x: currentX, y: currentY });
+    if (canvas){
+      const ctx = canvas.getContext('2d');
+    if (ctx) {
+      const rect = canvas.getBoundingClientRect();
+      const currentX = e.clientX - rect.left;
+      const currentY = e.clientY - rect.top;
+  
+      ctx.beginPath();
+      ctx.moveTo(lastPos.x, lastPos.y);
+      ctx.lineTo(currentX, currentY);
+      ctx.strokeStyle = 'black';
+      ctx.lineWidth = 3;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+      setLastPos({ x: currentX, y: currentY });
+    } else {
+      console.error("Failed to get 2D context")
+    }
+    } 
   };
 
   const stopDrawing = () => {
     setIsDrawing(false);
   };
 
+    // // Save the image in localStorage
+    // const saveImageToLocalStorage = () => {
+    //   const canvas = canvasRef.current;
+    //   if (canvas) {
+    //     const dataUrl = canvas.toDataURL('image/png'); // Convert the canvas to a base64-encoded PNG image
+    //     localStorage.setItem('drawingImage', dataUrl); // Store the image in localStorage
+    //     console.log('Image saved to localStorage');
+    //   }
+    // };
+
   // Function to save the image and send it to the backend
   const saveAndSendImage = () => {
     const canvas = canvasRef.current;
+    if(canvas){
     const dataUrl = canvas.toDataURL('image/png'); // Get image as PNG base64
     console.log(dataUrl);  // Check if dataUrl contains the correct base64 image string
   
@@ -62,17 +101,22 @@ const DrawingCanvas = () => {
       .catch((error) => {
         console.error('Error:', error);
       });
+    }
   };
   
 
   const clearCanvas = () => {
     const canvas = canvasRef.current;
+    if (canvas){
     const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (ctx) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  }
   };
 
   return (
-    <div>
+    <div className=''>
       <h1>Draw with Mouse</h1>
       <canvas
         ref={canvasRef}
@@ -85,8 +129,9 @@ const DrawingCanvas = () => {
         onMouseLeave={stopDrawing}
       ></canvas>
       <br />
+      {/* <button onClick={saveImageToLocalStorage}>Save Image</button> */}
       <button onClick={saveAndSendImage}>Save and Send Image</button>
-      <button onClick={clearCanvas}>Clear Canvas</button>
+      <button onClick={clearCanvas}>Clear</button>
     </div>
   );
 };

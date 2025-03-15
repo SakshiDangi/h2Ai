@@ -10,7 +10,7 @@ from flask_cors import CORS
 
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/api/*":{"origins":"http:localhost:3000/"}})
 file_path = "/Users/nicholask/Desktop/HACKATHON/ImageDataTools/ML_training/model/PaHaWBest.pt" ### 0.895 accuracy
 model = YOLO(file_path)
 

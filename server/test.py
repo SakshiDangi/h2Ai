@@ -4,7 +4,7 @@ from flask import Flask
 app = Flask(__name__)
 
 
-# define route and a view function
+# defined route and a view function
 @app.route('/')
 def hello():
     return "Hello World"
